@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow p-4">
+            <h3 class="mb-3">Редагувати запис (ID: {{ record.id }})</h3>
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="city_name" class="form-label">Нова назва міста:</label>
+                    <input type="text" class="form-control" id="city_name" name="city_name" value="{{ record.city_name }}" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Зберегти зміни</button>
+                <a href="{{ url_for('saved_records') }}" class="btn btn-secondary w-100 mt-2">Скасувати</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
