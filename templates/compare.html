@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="main-wrapper">
+    <!-- Пошукова картка -->
+    <div class="card p-4 mb-4">
+        <h2 class="mb-3 text-center">Порівняння погоди в кількох містах</h2>
+        <form method="POST" class="mt-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="cities" value="{{ query }}" placeholder="Введіть міста через кому (наприклад: Vienna, Bratislava, Prague)">
+                <button class="btn btn-primary" type="submit">Порівняти</button>
+            </div>
+        </form>
+        
+        {% if errors %}
+            <div class="alert alert-warning mt-3 mb-0">
+                <ul class="mb-0">
+                {% for err in errors %}
+                    <li>{{ err }}</li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if cities %}
+    <!-- Таблиця -->
+    <div class="card p-4 mb-4">
+        <h3 class="mb-3 text-center">Результати порівняння</h3>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Місто</th>
+                        <th>Температура (°C)</th>
+                        <th>Вологість (%)</th>
+                        <th>Вітер (м/с)</th>
+                        <th>Опис</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in cities %}
+                    <tr>
+                        <td><strong>{{ c.city_name }}</strong>, {{ c.country }}</td>
+                        <td>{{ c.temperature }}</td>
+                        <td>{{ c.humidity }}</td>
+                        <td>{{ c.wind_speed }}</td>
+                        <td>{{ c.condition }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Графіки в один рядок -->
+    <div class="charts-row">
+        <div class="chart-box">
+            <h5 class="mb-3">Графік температур</h5>
+            <img src="{{ url_for('static', filename='images/temp_comparison.png') }}" alt="Графік температур">
+        </div>
+        <div class="chart-box">
+            <h5 class="mb-3">Графік вологості</h5>
+            <img src="{{ url_for('static', filename='images/humidity_comparison.png') }}" alt="Графік вологості">
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
