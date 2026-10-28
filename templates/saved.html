@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Збережені записи погоди</h2>
+            <!-- Локальний пошук / фільтрація -->
+            <form method="GET" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" value="{{ query }}" placeholder="Фільтр за містом...">
+                <button class="btn btn-outline-secondary" type="submit">Знайти</button>
+            </form>
+        </div>
+
+        <div class="card shadow p-3">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Місто</th>
+                        <th>Температура</th>
+                        <th>Вологість</th>
+                        <th>Вітер</th>
+                        <th>Умови</th>
+                        <th>Час збереження</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in records %}
+                    <tr>
+                        <td>{{ r.id }}</td>
+                        <td><strong>{{ r.city_name }}</strong></td>
+                        <td>{{ r.temperature }} °C</td>
+                        <td>{{ r.humidity }}%</td>
+                        <td>{{ r.wind_speed }} м/с</td>
+                        <td>{{ r.condition }}</td>
+                        <td>{{ r.recorded_at }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_record', record_id=r.id) }}" class="btn btn-sm btn-warning">Редагувати</a>
+                            <form action="{{ url_for('delete_record', record_id=r.id) }}" method="POST" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Ви впевнені?')">Видалити</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted">Записів не знайдено</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
